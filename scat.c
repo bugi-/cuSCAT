@@ -1,5 +1,5 @@
 /*
-Huom. k‰yt‰n C99 for-silmukoita, koska nvcc toimii C++-k‰‰t‰nj‰n‰, jolloin t‰m‰ ei luultavasti ole koskaan ongelma.
+Huom. k‰yt‰n C99 for-silmukoita, koska nvcc toimii C++-k‰‰nt‰j‰n‰, jolloin t‰m‰ ei luultavasti ole koskaan ongelma.
 */
 
 #include <stdio.h>
