@@ -9,8 +9,8 @@
 #define STEP 0.1f // Step size for the photon packets. The value is relative to length of an element in the grid.
 
 // Status of the packet after simulating it.
-#define RAY_SUCCESS 0
-#define RAY_TRAPPED 1
+#define RAY_OUT 0
+#define RAY_IN 1
 
 // Choice of random number generator
 #define RNG_SEED(x) srand(x)

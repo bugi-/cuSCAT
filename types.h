@@ -1,22 +1,22 @@
 #include "constants.h"
 #include <stdlib.h>
 
-// Base class for other cloud types. Includes only parameters of the simulation grid.
+// Base class for other cloud types. Includes only parameters of the simulation grid. Some values are precomputed for faster access later.
 class Cloud {
 public:
 	int side_length; // Number of elements per one side of the grid
 	float side_length_f; // Same as float.
-	float step_length; // Length of a single step of the ray.
+	float step_size; // Length of a single step of the ray.
 	float el_side_length; // Length of a side for a single element
 	float albedo; // Albedo of a single particle.
 	float kappa;
-	float *cloud;
+	float *cloud; // Number density of each element in the cloud
 	
 	Cloud(int side, float el_side, float albed, float kapp) {
 		side_length = side;
 		side_length_f = float(side);
 		el_side_length = el_side;
-		step_length = el_side * STEP;
+		step_size = el_side * STEP;
 		albedo = albed;
 		kappa = kapp;
 	}
@@ -55,10 +55,10 @@ public:
 		}
 		position[DIMS-1] = 0.0f; // Last dimension is always 0
 		
-		// Initialize the direction vector. In this case the direction vector is a unit vector in the z-direction.
+		// Initialize the direction vector. In this case the direction vector is a unit vector times step_size in the z-direction.
 		for (int i=0; i<DIMS-1; i++) {
-			direction[i] = 0.0f * STEP;
+			direction[i] = 0.0f * params->step_size;
 		}
-		direction[DIMS-1] = 1.0f * STEP;
+		direction[DIMS-1] = 1.0f * params->step_size;
 	}
 };
