@@ -12,6 +12,9 @@
 #define RAY_SUCCESS 0
 #define RAY_TRAPPED 1
 
+// Choice of random number generator
+#define RNG_SEED(x) srand(x)
 #define RNG(x) rand()
+
 
 #endif

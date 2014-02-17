@@ -154,14 +154,9 @@ int main(void) {
 		dims[i] = dim_size;
 	}
 
-	// Tehd‰‰n pilvimalli ja siirret‰‰n se laitteelle
+	// Tehd‰‰n pilvimalli
 	float *hCloud = generate_constant_density_cloud(dim_size);
-	float *dCloud;
-	CUDA_CALL(cudaMalloc((void **)&dCloud, dim_size * dim_size * dim_size * sizeof(float)));
-	CUDA_CALL(cudaMemcpy(dCloud, hCloud, dim_size * dim_size * dim_size * sizeof(float), cudaMemcpyHostToDevice));
-	free(hCloud);
 
-	// Pilven parametrit GPU:lle
 	cloud_state *hcloud_state = (cloud_state *)malloc(sizeof(cloud_state));
 	hcloud_state->albedo = 0.8f;
 	hcloud_state->cell_side_length = 20.0f;
@@ -169,22 +164,8 @@ int main(void) {
 	hcloud_state->kappa = 10.0f;
 	hcloud_state->side_length = dim_size;
 	hcloud_state->side_length_f = (float)dim_size;
-	CUDA_CALL(cudaMemcpyToSymbol(state, (const void *)hcloud_state, sizeof(cloud_state)));
 
-	// Varataan muistia ja alustetaan rng
-	curandStateMtgp32 *dRandStates;
-    mtgp32_kernel_params *dRandParams;
-	CUDA_CALL(cudaMalloc((void **)&dRandStates, gridSize * sizeof(curandStateMtgp32))); // Jokainen lohko k‰ytt‰‰ omaa rng:n tilaa.
-	CUDA_CALL(cudaMalloc((void **)&dRandParams, sizeof(mtgp32_kernel_params)));
-
-	// K‰ynnistet‰‰n ydin
-	trace_ray<<<gridSize, blockSize>>>(dCloud, NULL, ddims, dRandStates);
-
-	CUDA_CALL(cudaDeviceSynchronize());
-	// Poistetaan muistivarauksia laitteelta
-	CUDA_CALL(cudaFree(dCloud));
-	CUDA_CALL(cudaFree(ddims));
-	CUDA_CALL(cudaFree(dRandStates));
-	CUDA_CALL(cudaFree(dRandParams));
-    return 0;
+	// K‰ynnistet‰‰n "ydin"
+	trace_ray(hCloud, NULL, hdims);
+	return 0;
 }

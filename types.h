@@ -22,12 +22,14 @@ public:
 	}
 };
 
+// Cloud with a uniform (constant) density
 class Uniform_cloud: public Cloud {
 public:
-	Uniform_cloud(int side, float el_side, float albedo, float kappa, int size, float val) :
-		Cloud(side, el_side, albedo, kappa) {
-		size_t cloud_size = size*size*size*sizeof(float);
-		float *cloud = (float *)malloc(cloud_size);
+	Uniform_cloud(int side, float el_side, float albedo, float kappa, float val) :
+	Cloud(side, el_side, albedo, kappa) {
+		int size = side_length;
+		int cloud_size = size*size*size;
+		float *cloud = (float *)malloc(cloud_size*sizeof(float));
 		for (int i = 0; i < cloud_size; i++) {
 			cloud[i] = val;
 		}
@@ -42,6 +44,8 @@ public:
 	float position[DIMS];
 	float direction[DIMS];
 	float intensity;
+
+	Ray(void) {}
 
 	// Initialization to x,y-plane
 	Ray(Cloud* params) {
