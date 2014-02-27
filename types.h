@@ -5,7 +5,7 @@
 class Cloud {
 public:
 	int side_length; // Number of elements per one side of the grid
-	float side_length_f; // Same as float.
+	float side_length_f; // Same cast as float for easier access.
 	float step_size; // Length of a single step of the ray.
 	float el_side_length; // Length of a side for a single element
 	float albedo; // Albedo of a single particle.
@@ -60,5 +60,13 @@ public:
 			direction[i] = 0.0f * params->step_size;
 		}
 		direction[DIMS-1] = 1.0f * params->step_size;
+	}
+	
+	// Returns true if the ray is still in the cloud. Otherwise returns false.
+	bool in_cloud(Cloud *cl) {
+		if (position[0] < 0.0f || position[0] > cl->side_length_f) return false;
+		if (position[1] < 0.0f || position[1] > cl->side_length_f) return false;
+		if (position[2] < 0.0f || position[2] > cl->side_length_f) return false;
+		return true;
 	}
 };

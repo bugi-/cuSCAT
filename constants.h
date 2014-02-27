@@ -3,10 +3,10 @@
 
 #define DIMS 3 // Number of dimensions
 
-#define SEED 1988 // Seed for RNG
+#define pow2(x) ((x)*(x))
 
-#define MAX_SCATTER (int)1E2 // Maximum number of scatterings for a single photon packet
-#define STEP 0.1f // Step size for the photon packets. The value is relative to length of an element in the grid.
+#define MAX_SCATTERS (int)1E3 // Maximum number of scatterings for a single photon packet
+#define STEP 1.0f // Step size for the photon packets. The value is relative to length of an element in the grid.
 
 // Status of the packet after simulating it.
 #define RAY_OUT 0
@@ -15,6 +15,7 @@
 // Choice of random number generator
 #define RNG_SEED(x) srand(x)
 #define RNG(x) rand()
+#define SEED 1988 // Seed for RNG
 
 
 #endif

@@ -3,10 +3,12 @@ serial_file = scat_new.cpp
 headers = types.h constants.h
 cpp_compiler = g++
 
+main_params = -O3
+
 debug_params = -g -Wall
 
 main: $(serial_file) $(headers)
-	$(cpp_compiler) $(serial_file) $(headers) -O3 -o $(EXEC_NAME)
+	$(cpp_compiler) $(serial_file) $(headers) $(main_params) -o $(EXEC_NAME)
 
 debug: $(serial_file) $(headers)
 	$(cpp_compiler) $(serial_file) $(headers) $(debug_params) -o $(EXEC_NAME)
