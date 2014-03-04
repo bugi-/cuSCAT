@@ -1,5 +1,8 @@
+#ifndef types_h
+#define types_h
+
+#include "scat.h"
 #include "constants.h"
-#include <stdlib.h>
 
 // Base class for other cloud types. Includes only parameters of the simulation grid. Some values are precomputed for faster access later.
 class Cloud {
@@ -9,30 +12,32 @@ public:
 	float step_size; // Length of a single step of the ray.
 	float el_side_length; // Length of a side for a single element
 	float albedo; // Albedo of a single particle.
-	float kappa;
-	float *cloud; // Number density of each element in the cloud
+	float *cloud; // Optical depth per distance unit of each element in the cloud
 	
-	Cloud(int side, float el_side, float albed, float kapp) {
+	Cloud(int side, float el_side, float albed) {
 		side_length = side;
 		side_length_f = float(side);
 		el_side_length = el_side;
 		step_size = el_side * STEP;
 		albedo = albed;
-		kappa = kapp;
 	}
 };
 
 // Cloud with a uniform (constant) density
 class Uniform_cloud: public Cloud {
 public:
-	Uniform_cloud(int side, float el_side, float albedo, float kappa, float val) :
-	Cloud(side, el_side, albedo, kappa) {
+	Uniform_cloud(int side, float el_side, float albedo, float val) :
+	Cloud(side, el_side, albedo) {
 		int size = side_length;
 		int cloud_size = size*size*size;
-		float *cloud = (float *)malloc(cloud_size*sizeof(float));
+		cloud = new float[cloud_size];
 		for (int i = 0; i < cloud_size; i++) {
 			cloud[i] = val;
 		}
+	}
+	
+	~Uniform_cloud() {
+		delete[] cloud;
 	}
 };
 
@@ -53,7 +58,7 @@ public:
 		for (int i=0; i<DIMS-1; i++) {
 			position[i] = RNG() * params->side_length_f;
 		}
-		position[DIMS-1] = 0.0f; // Last dimension is always 0
+		position[DIMS-1] = 0.0f; // Last dimension is 0
 		
 		// Initialize the direction vector. In this case the direction vector is a unit vector times step_size in the z-direction.
 		for (int i=0; i<DIMS-1; i++) {
@@ -70,3 +75,5 @@ public:
 		return true;
 	}
 };
+
+#endif
