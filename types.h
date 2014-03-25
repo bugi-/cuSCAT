@@ -71,10 +71,12 @@ class Ray {
 public:
 	// Lists are ordered as x,y,z.
 	float position[DIMS];
-	float direction[DIMS];
+	float direction[DIMS]; // Should always be a unit vector
 	float intensity;
 
-	Ray(void) {}
+	Ray(void) {
+		intensity = 1.0f;
+	}
 
 	// Initialization to x,y-plane
 	Ray(Cloud* params) {
@@ -102,8 +104,12 @@ public:
 	// When the ray leaves cloud, see if it is captured by the observer. Only the z = side_length side is currently used in the map.
 	void process_output(Cloud *cl) {
 		float side = cl->side_length_f;
-		if (position[2] >= side && fabs(direction[2]) < DETECTION_DIRECTION_LIMIT) {
-			(cl->map)[position[0] + position[1]*side] += intensity;
+		float angle = fabs(acos(direction[2]));
+		cout << direction[0] << " " << direction[1] << " " << direction[2] << endl;
+		if (position[2] >= side && angle < DETECTION_DIRECTION_LIMIT) {
+			int subs = position[0] + position[1]*side;
+			(cl->map)[subs] += intensity;
+			cout << intensity << endl;
 		}
 	}
 };

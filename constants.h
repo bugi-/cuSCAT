@@ -20,6 +20,6 @@
 #define RNG(x) ((float)rand() / RAND_MAX)
 #define SEED 1988 // Seed for RNG
 
-#define OUTPUT_FILE "out.put"
+#define OUTPUT_FILE "map.out"
 
 #endif

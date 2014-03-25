@@ -30,15 +30,14 @@ void traverse_element(Cloud *cloud, Ray *ray) {
 	cloud_index(cloud, ray) * dist;
 }
 
-double mean_scatters = 0.0;
+float mean_tau = 0.0f;
+double mean_scatters = 0.0f;
 int simulate_ray(Cloud *cloud) {
 	Ray ray (cloud);
-	int scatters = 0;
+	int scatters;
 	for (scatters = 0; scatters < MAX_SCATTERS; scatters++) {
-		float tau = -log(RNG());
-		if (scatters % 10000 == 0) printf("tau: %f\n", tau);
-		for (; tau > 0.0f;) { // Take steps until tau reaches 0.
-		
+		for (float tau = -log(RNG()); tau > 0.0f;) { // Take steps until tau reaches 0.
+			mean_tau += tau;
 			// update tau
 			tau -= cloud_index(cloud, &ray) * STEP;
 			
@@ -52,7 +51,10 @@ int simulate_ray(Cloud *cloud) {
 			}
 			
 			// Stop if the ray is out of bounds
-			if (!ray.in_cloud(cloud)) return RAY_OUT;
+			if (!ray.in_cloud(cloud)) {
+				ray.process_output(cloud);
+				return RAY_OUT;
+			}
 		}
 		// Scatter
 	}
