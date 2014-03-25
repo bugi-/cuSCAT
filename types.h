@@ -14,7 +14,8 @@ public:
 	float step_size; // Length of a single step of the ray.
 	float el_side_length; // Length of a side for a single element
 	float albedo; // Albedo of a single particle.
-	float *cloud; // Optical depth per distance unit of each element in the cloud
+	float *cloud; // Optical depth per distance unit of each element in the cloud.
+	float *map; // Map of scattered light.
 	
 	Cloud(int side, float el_side, float albed) {
 		side_length = side;
@@ -33,15 +34,34 @@ public:
 		int size = side_length;
 		int cloud_size = size*size*size;
 		cloud = new float[cloud_size];
+		map = new float[pow2(size)];
 		for (int i = 0; i < cloud_size; i++) {
 			cloud[i] = val;
 		}
 //		cout << "" << cloud[0] << " " << cloud[15] << endl;
 		printf("%f %f \n", cloud[0], cloud[15]);
 	}
+
+	// Writes the map to given file	as whitespace separated text
+	void map2file(void) {
+		ofstream file;
+		file.open(OUTPUT_FILE);
+		file.setf(ios::scientific);
+		file.width(8);
+		
+		for (int i=0; i<side_length; i++) {
+			for (int j=0; j<side_length; j++) {
+				file << map[i + j*side_length] << " ";
+			}
+			file << endl;
+		}
+		
+		file.close();
+	}
 	
 	~Uniform_cloud() {
 		delete[] cloud;
+		delete[] map;
 	}
 };
 
@@ -79,6 +99,13 @@ public:
 		return true;
 	}
 	
+	// When the ray leaves cloud, see if it is captured by the observer. Only the z = side_length side is currently used in the map.
+	void process_output(Cloud *cl) {
+		float side = cl->side_length_f;
+		if (position[2] >= side && fabs(direction[2]) < DETECTION_DIRECTION_LIMIT) {
+			(cl->map)[position[0] + position[1]*side] += intensity;
+		}
+	}
 };
 
 #endif

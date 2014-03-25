@@ -13,6 +13,7 @@ int main(void) {
 	for (int i=0; i<num_photons; i++) {
 		sum += simulate_ray(&cloud);
 	}
+	cloud.map2file();
 	printf("%i, %i\n", sum, num_photons);
 	printf("%1.0e\n", mean_scatters / num_photons);
 	return 0;

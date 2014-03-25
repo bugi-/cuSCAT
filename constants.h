@@ -9,6 +9,7 @@
 
 #define MAX_SCATTERS (int)1E3 // Maximum number of scatterings for a single photon packet
 #define STEP 0.1f // Step size for the photon packets. The value is relative to length of an element in the grid.
+#define DETECTION_DIRECTION_LIMIT 0.1 // How many radians from a main axis the ray can point to be detected
 
 // Status of the packet after simulating it.
 #define RAY_OUT 1
@@ -19,5 +20,6 @@
 #define RNG(x) ((float)rand() / RAND_MAX)
 #define SEED 1988 // Seed for RNG
 
+#define OUTPUT_FILE "out.put"
 
 #endif
