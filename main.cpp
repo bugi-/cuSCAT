@@ -1,8 +1,8 @@
-#include "scat.h"
+#include "cuScat.h"
 #include "scattering.c"
 
 int main(void) {
-	const int num_photons = (int)1E4;
+	const int num_photons = (int)1E3;
 	extern double mean_scatters;
 	RNG_SEED(SEED);
 

@@ -1,8 +1,10 @@
 #ifndef types_h
 #define types_h
 
-#include "scat.h"
+#include "cuScat.h"
 #include "constants.h"
+
+using namespace std;
 
 // Base class for other cloud types. Includes only parameters of the simulation grid. Some values are precomputed for faster access later.
 class Cloud {
@@ -34,6 +36,8 @@ public:
 		for (int i = 0; i < cloud_size; i++) {
 			cloud[i] = val;
 		}
+//		cout << "" << cloud[0] << " " << cloud[15] << endl;
+		printf("%f %f \n", cloud[0], cloud[15]);
 	}
 	
 	~Uniform_cloud() {
@@ -69,11 +73,12 @@ public:
 	
 	// Returns true if the ray is still in the cloud. Otherwise returns false.
 	bool in_cloud(Cloud *cl) {
-		if (position[0] < 0.0f || position[0] > cl->side_length_f) return false;
-		if (position[1] < 0.0f || position[1] > cl->side_length_f) return false;
-		if (position[2] < 0.0f || position[2] > cl->side_length_f) return false;
+		if (position[0] < 0.0f || position[0] >= cl->side_length_f) return false;
+		if (position[1] < 0.0f || position[1] >= cl->side_length_f) return false;
+		if (position[2] < 0.0f || position[2] >= cl->side_length_f) return false;
 		return true;
 	}
+	
 };
 
 #endif

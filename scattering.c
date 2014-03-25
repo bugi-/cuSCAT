@@ -1,4 +1,4 @@
-#include "scat.h"
+#include "cuScat.h"
 
 float *normals; // Normal vectors of each face of a cube
 
@@ -35,10 +35,12 @@ int simulate_ray(Cloud *cloud) {
 	Ray ray (cloud);
 	int scatters = 0;
 	for (scatters = 0; scatters < MAX_SCATTERS; scatters++) {
-		for (float tau = -log(RNG()); tau > 0.0f;) { // Take steps until tau reaches 0.
+		float tau = -log(RNG());
+		if (scatters % 10000 == 0) printf("tau: %f\n", tau);
+		for (; tau > 0.0f;) { // Take steps until tau reaches 0.
 		
 			// update tau
-			tau -= cloud_index(cloud, &ray);
+			tau -= cloud_index(cloud, &ray) * STEP;
 			
 			/*
 			 *	Switch to analytical steps

@@ -1,6 +1,6 @@
 EXEC_NAME = main.out
-serial_file = scat_new.cpp
-dependencies = types.h scat.h constants.h
+serial_file = main.cpp
+dependencies = types.h cuScat.h constants.h
 cpp_compiler = g++
 
 main_params = -O3
@@ -20,6 +20,6 @@ run:
 	./$(EXEC_NAME)
 
 clean:
-#	rm *.o
+	rm *.o
 	rm *.gch
 
