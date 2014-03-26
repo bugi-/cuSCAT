@@ -5,7 +5,7 @@ filename = "map.out"
 
 data = np.loadtxt(filename)
 
-print np.max(data)
+print "Max value:", np.max(data)
 
 plt.pcolor(data, vmin=0, vmax=np.max(data))
 plt.show()

@@ -36,8 +36,9 @@ int simulate_ray(Cloud *cloud) {
 	Ray ray (cloud);
 	int scatters;
 	for (scatters = 0; scatters < MAX_SCATTERS; scatters++) {
-		for (float tau = -log(RNG()); tau > 0.0f;) { // Take steps until tau reaches 0.
-			mean_tau += tau;
+		float tau = -log(RNG());
+		mean_tau += tau;
+		while (tau > 0.0f) { // Take steps until tau reaches 0.
 			// update tau
 			tau -= cloud_index(cloud, &ray) * STEP;
 			
