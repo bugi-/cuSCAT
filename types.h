@@ -13,22 +13,24 @@ public:
 	float side_length_f; // Same cast as float for easier access.
 	float step_size; // Length of a single step of the ray.
 	float albedo; // Albedo of a single particle.
+	float g; // Asymmetry parameter for Heyney-Greenstein function
 	float *cloud; // Optical depth per distance unit of each element in the cloud.
 	float *map; // Map of scattered light.
 	
-	Cloud(int side, float albed) {
+	Cloud(int side, float albed, float gi) {
 		side_length = side;
 		side_length_f = float(side);
 		step_size = STEP;
 		albedo = albed;
+		g = gi;
 	}
 };
 
 // Cloud with a uniform (constant) density
 class Uniform_cloud: public Cloud {
 public:
-	Uniform_cloud(int side, float albedo, float val) :
-	Cloud(side, albedo) {
+	Uniform_cloud(int side, float albedo, float gi, float val) :
+	Cloud(side, albedo, gi) {
 		int size = side_length;
 		int cloud_size = size*size*size;
 		cloud = new float[cloud_size];
@@ -66,8 +68,8 @@ public:
 // Constant density cloud where outside is zero.
 class Uniform_sphere: public Uniform_cloud {
 public:
-	Uniform_sphere(int side, float albedo, float val) :
-	Uniform_cloud(side, albedo, val) {
+	Uniform_sphere(int side, float albedo, float gi, float val) :
+	Uniform_cloud(side, albedo, gi, val) {
 	int size = side_length;
 	float distance;
 	float mid = side / 2.0f; // Midpoint of the cloud in all dimensions
@@ -100,14 +102,14 @@ public:
 	float direction[DIMS];
 	float dir_len; // Length of the direction vector
 	float intensity;
-
-	Ray(void) {
-		intensity = 1.0f;
-	}
-
+	float g;
+	bool zero_g; // Whether g is zero or not
 	// Initialization to x,y-plane
 	Ray(Cloud* params) {
 		intensity = 1.0f;
+		g = params->g;
+		if (fabs(g) < FLOAT_EPS) zero_g = true;
+		else zero_g = false;
 		for (int i=0; i<DIMS-1; i++) {
 			position[i] = RNG() * params->side_length_f;
 		}
@@ -152,7 +154,55 @@ public:
 		return acos(1.0f - 2.0f*RNG());
 	}
 	
+	// Scatters the ray to a new direction
 	void scatter(void) {
+		// Calculate the scattering direction
+		float phi = 2.0f*M_PI * RNG();
+		float theta;
+		if (zero_g) theta = HG0();
+		else theta = HG(g);
+		
+		float new_direction[DIMS];
+		new_direction[0] = sin(theta)*(direction[0]*direction[2]*cos(phi) - direction[1]*sin(phi));
+		new_direction[0] /= sqrt(1-pow2(direction[2]));
+		new_direction[0] += direction[0]*cos(theta);
+		
+		new_direction[1] = sin(theta)*(direction[1]*direction[2]*cos(phi) + direction[0]*sin(phi));
+		new_direction[1] /= sqrt(1-pow2(direction[2]));
+		new_direction[1] += direction[1]*cos(theta);
+		
+		new_direction[2] = -sqrt();
+		/*
+	phi = 2pi * rand()
+    theta = random_scattering_angle(phase_params)
+    sp = sin(phi)
+    cp = cos(phi)
+    st = sin(theta)
+    ct = cos(theta)
+    x = st*sp
+    y = st*cp
+    z = ct
+    
+    theta_rotation = acos(ray.direction[3])
+    ctr = cos(theta_rotation)
+    str = sin(theta_rotation)
+    phi_rotation = (str!=0.0) ? acos(ray.direction[1] / str) : 0.0
+    cpr = cos(phi_rotation)
+    spr = sin(phi_rotation)
+
+    t = (ctr*x - str*z)
+    new_x = cpr*t - spr*y
+    new_y = spr*t + cpr*y
+    new_z = str*x + ctr*z
+    
+    ray.origin = location
+    ray.direction[1] = new_x
+    ray.direction[2] = new_y
+    ray.direction[3] = new_z
+    ray.intensity *= omega
+    return ray
+		
+		*/
 		return;
 	}
 };

@@ -7,7 +7,8 @@ int main(void) {
 	RNG_SEED(SEED);
 
 	// Initialize the cloud
-	Uniform_sphere cloud (100, 0.5, 100.0);
+	                    //size, albedo, g, val
+	Uniform_sphere cloud (100, 0.5, 0.0, 100.0);
 
 	int sum = 0;
 	for (int i=0; i<num_rays; i++) {
