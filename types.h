@@ -38,11 +38,9 @@ public:
 		for (int i = 0; i < cloud_size; i++) {
 			cloud[i] = val;
 		}
-//		cout << "" << cloud[0] << " " << cloud[15] << endl;
-		printf("%f %f \n", cloud[0], cloud[15]);
 	}
 
-	// Writes the map to given file	as whitespace separated text
+	// Writes the map to the file as whitespace separated text
 	void map2file(void) {
 		ofstream file;
 		file.open(OUTPUT_FILE);
@@ -51,7 +49,7 @@ public:
 		
 		for (int i=0; i<side_length; i++) {
 			for (int j=0; j<side_length; j++) {
-				file << map[i + j*side_length] << " ";
+				file << map[i + j*side_length] << OUTPUT_FILE_SEP;
 			}
 			file << endl;
 		}
@@ -164,45 +162,19 @@ public:
 		
 		float new_direction[DIMS];
 		new_direction[0] = sin(theta)*(direction[0]*direction[2]*cos(phi) - direction[1]*sin(phi));
-		new_direction[0] /= sqrt(1-pow2(direction[2]));
+		new_direction[0] /= sqrtf(1-pow2(direction[2]));
 		new_direction[0] += direction[0]*cos(theta);
 		
 		new_direction[1] = sin(theta)*(direction[1]*direction[2]*cos(phi) + direction[0]*sin(phi));
-		new_direction[1] /= sqrt(1-pow2(direction[2]));
+		new_direction[1] /= sqrtf(1.0f-pow2(direction[2]));
 		new_direction[1] += direction[1]*cos(theta);
 		
-		new_direction[2] = -sqrt();
-		/*
-	phi = 2pi * rand()
-    theta = random_scattering_angle(phase_params)
-    sp = sin(phi)
-    cp = cos(phi)
-    st = sin(theta)
-    ct = cos(theta)
-    x = st*sp
-    y = st*cp
-    z = ct
-    
-    theta_rotation = acos(ray.direction[3])
-    ctr = cos(theta_rotation)
-    str = sin(theta_rotation)
-    phi_rotation = (str!=0.0) ? acos(ray.direction[1] / str) : 0.0
-    cpr = cos(phi_rotation)
-    spr = sin(phi_rotation)
+		new_direction[2] = -sqrtf(1.0f-pow2(direction[2]))*sin(theta)*cos(phi)+direction[2]*cos(theta);
 
-    t = (ctr*x - str*z)
-    new_x = cpr*t - spr*y
-    new_y = spr*t + cpr*y
-    new_z = str*x + ctr*z
-    
-    ray.origin = location
-    ray.direction[1] = new_x
-    ray.direction[2] = new_y
-    ray.direction[3] = new_z
-    ray.intensity *= omega
-    return ray
-		
-		*/
+		direction[0] = new_direction[0];
+		direction[1] = new_direction[1];
+		direction[2] = new_direction[2];
+
 		return;
 	}
 };

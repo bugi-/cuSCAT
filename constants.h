@@ -22,5 +22,6 @@ static inline int pow2(int x) {return x*x;}
 #define SEED 1988 // Seed for RNG
 
 #define OUTPUT_FILE "map.out"
+#define OUTPUT_FILE_SEP " " // Separator for the output file
 
 #endif

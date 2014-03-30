@@ -2,6 +2,7 @@ EXEC_NAME = main.out
 serial_file = main.cpp
 dependencies = types.h cuScat.h constants.h
 others = scattering.c
+plot = plot.py
 cpp_compiler = g++
 editor = gedit
 
@@ -23,6 +24,12 @@ gdb:
 
 run:
 	./$(EXEC_NAME)
+
+time:
+	time ./$(EXEC_NAME)
+
+plot:
+	python $(plot)
 
 clean:
 	rm *.o

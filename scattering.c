@@ -1,7 +1,5 @@
 #include "cuScat.h"
 
-float *normals; // Normal vectors of each face of a cube
-
 // Gets the current element of the cloud model.
 float inline cloud_index(Cloud *cl, Ray *r) {
 	int i, j, k;
@@ -10,7 +8,7 @@ float inline cloud_index(Cloud *cl, Ray *r) {
 	k = (int) r->position[2];
 	return cl->cloud[i + j * cl->side_length + k * pow2(cl->side_length)];
 }
-
+/*
 float inline calc_d(int face, Ray *ray) {
 	float temp[DIMS];
 	return 0.0;
@@ -29,7 +27,8 @@ void traverse_element(Cloud *cloud, Ray *ray) {
 	ray->position[2] = exit_point[2];
 	cloud_index(cloud, ray) * dist;
 }
-
+*/
+// Variables for statistics
 float mean_tau = 0.0f;
 double mean_scatters = 0.0f;
 int simulate_ray(Cloud *cloud) {
@@ -57,7 +56,7 @@ int simulate_ray(Cloud *cloud) {
 				return RAY_OUT;
 			}
 		}
-		// Scatter
+		ray.scatter();
 	}
 	mean_scatters += scatters;
 	return RAY_IN;
