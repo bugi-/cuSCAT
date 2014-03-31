@@ -16,3 +16,7 @@
 *.exe
 *.out
 *.app
+
+# Backups and temporary files
+*~
+*.gch
