@@ -12,10 +12,10 @@
 *.so.*
 *.dylib
 
-# Executables
+# Executables and output files
 *.exe
 *.out
-*.app
+*.map
 
 # Backups and temporary files
 *~

@@ -6,7 +6,7 @@ plot = plot.py
 cpp_compiler = g++
 editor = gedit
 
-main_params = -O3 -msse -msse2
+main_params = -O3
 
 debug_params = -g -Wall
 
