@@ -57,8 +57,8 @@ int simulate_ray(Cloud *cloud) {
 			}
 		}
 		ray.scatter();
+		mean_scatters += scatters;
 	}
-	mean_scatters += scatters;
 	return RAY_IN;
 }
 
