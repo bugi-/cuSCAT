@@ -13,7 +13,7 @@ int main(void) {
 
 	// Initialize the cloud
 	                    //size, albedo, g, val
-	Uniform_sphere cloud (100, 0.5, 0.0, 1.E-2);
+	Uniform_sphere cloud (100, 0.5, 1.0, 1.E-2);
 
 	int sum = 0;
 	for (int i=0; i<num_rays; i++) {
@@ -24,8 +24,8 @@ int main(void) {
 	printf("mean scatters: %1.0e\n", mean_scatters / num_rays);
 	printf("mean tau: %3.2e\n", mean_tau / num_rays);
 	
-	start = clock();
-	printf("Time taken by program: %1.4fs\n", (double)(start-end)/(double)CLOCKS_PER_SEC);
+	end = clock();
+	printf("Time taken by program: %1.4fs\n", (double)(end-start)/(double)CLOCKS_PER_SEC);
 	return 0;
 }
 
