@@ -1,7 +1,7 @@
 EXEC_NAME = main.out
 serial_file = main.cpp
-dependencies = types.h cuScat.h constants.h
-others = scattering.c
+dependencies = types.h cuScat.h Ray.o Cloud.o
+others = scattering.c Cloud.cpp Ray.cpp
 plot = plot.py
 cpp_compiler = g++
 editor = gedit
@@ -39,6 +39,12 @@ time:
 
 plot:
 	python $(plot)
+
+Ray.o:
+	gcc -c Ray.cpp
+
+Cloud.o:
+	gcc -c Cloud.cpp
 
 clean:
 	rm *.o

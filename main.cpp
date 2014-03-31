@@ -13,7 +13,7 @@ int main(void) {
 
 	// Initialize the cloud
 	                    //size, albedo, g, val
-	Uniform_sphere cloud (100, 0.5, -1.0, 1.E-2);
+	Uniform_sphere cloud (100, 0.5, 0.5, 1.E-2);
 
 	int sum = 0;
 	for (int i=0; i<num_rays; i++) {

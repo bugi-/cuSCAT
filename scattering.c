@@ -1,4 +1,5 @@
 #include "cuScat.h"
+#include "types.h"
 
 // Gets the current element of the cloud model.
 float inline cloud_index(Cloud *cl, Ray *r) {
