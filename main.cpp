@@ -3,7 +3,7 @@
 
 int main(void) {
 	const int num_rays = (int)1E6;
-	extern double mean_scatters;
+	//extern float mean_scatters;
 	clock_t start, end;
 	
 	start = clock();
@@ -23,9 +23,10 @@ int main(void) {
 	printf("Rays out, total: %i, %i\n", sum, num_rays);
 	printf("mean scatters: %1.0e\n", mean_scatters / num_rays);
 	printf("mean tau: %3.2e\n", mean_tau / num_rays);
+	printf("mean intensity: %3.2e\n", mean_intensity / num_rays);
 	
 	end = clock();
-	printf("Time taken by program: %1.4fs\n", (double)(end-start)/(double)CLOCKS_PER_SEC);
+	printf("Time taken by program: %2.4fs\n", (double)(end-start)/(double)CLOCKS_PER_SEC);
 	return 0;
 }
 

@@ -153,7 +153,7 @@ public:
 	}
 	
 	// Scatters the ray to a new direction
-	void scatter(void) {
+	void scatter(Cloud *cl) {
 		// Calculate the scattering direction
 		float phi = 2.0f*M_PI * RNG();
 		float theta;
@@ -174,6 +174,8 @@ public:
 		direction[0] = new_direction[0];
 		direction[1] = new_direction[1];
 		direction[2] = new_direction[2];
+
+		intensity *= cl->albedo;
 
 		return;
 	}

@@ -30,7 +30,8 @@ void traverse_element(Cloud *cloud, Ray *ray) {
 */
 // Variables for statistics
 float mean_tau = 0.0f;
-double mean_scatters = 0.0f;
+float mean_scatters = 0.0f;
+float mean_intensity = 0.0f;
 int simulate_ray(Cloud *cloud) {
 	Ray ray (cloud);
 	int scatters;
@@ -53,12 +54,14 @@ int simulate_ray(Cloud *cloud) {
 			// Stop if the ray is out of bounds
 			if (!ray.in_cloud(cloud)) {
 				ray.process_output(cloud);
+				mean_intensity += ray.intensity;
 				return RAY_OUT;
 			}
 		}
-		ray.scatter();
+		ray.scatter(cloud);
 		mean_scatters += scatters;
 	}
+	mean_intensity += ray.intensity;
 	return RAY_IN;
 }
 
