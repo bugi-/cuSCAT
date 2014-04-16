@@ -11,12 +11,15 @@ public:
 	float intensity;
 	float g;
 	bool zero_g; // Whether g is zero or not
+	static int HG_calls;
+	static int HG0_calls;
 	// Initialization to x,y-plane
 	Ray(Cloud* params) {
 		intensity = 1.0f;
 		g = params->g;
 		if (fabs(g) < FLOAT_EPS) zero_g = true;
 		else zero_g = false;
+		printf("g:%f, zero_g %d\n", g, zero_g);
 		for (int i=0; i<DIMS-1; i++) {
 			position[i] = RNG() * params->side_length_f;
 		}
@@ -51,13 +54,15 @@ public:
 
 	// The following functions return the angle given by Henyey-Greenstein phase function in radians. The latter gives the angle for g = 0.
 	static float HG(float g) {
-		float ret = 1 + pow2(g);
-		ret -= pow2((1-pow2(g)) / (1-g+2*g*RNG()));
-		ret /= 2*g;
+		HG_calls++;
+		float ret = 1.f + pow2(g);
+		ret -= pow2((1.f-pow2(g)) / (1.f-g+2.f*g*RNG()));
+		ret /= 2.f*g;
 		return acos(ret);
 	}
 	
 	static float HG0(void) {
+		HG0_calls++;
 		return acos(1.0f - 2.0f*RNG());
 	}
 	
@@ -89,3 +94,6 @@ public:
 		return;
 	}
 };
+// Initialize static class members
+int Ray::HG_calls = 0;
+int Ray::HG0_calls = 0;

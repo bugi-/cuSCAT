@@ -4,6 +4,7 @@
 // Gets the current element of the cloud model.
 float inline cloud_index(Cloud *cl, Ray *r) {
 	int i, j, k;
+	// In the following casts to int truncating behaviour is expected.
 	i = (int) r->position[0];
 	j = (int) r->position[1];
 	k = (int) r->position[2];

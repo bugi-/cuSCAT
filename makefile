@@ -1,6 +1,7 @@
 EXEC_NAME = main.out
 serial_file = main.cpp
-dependencies = types.h cuScat.h Ray.o Cloud.o
+headers = types.h cuScat.h
+obj_files = Ray.o Cloud.o
 others = scattering.c Cloud.cpp Ray.cpp
 plot = plot.py
 cpp_compiler = g++
@@ -12,18 +13,18 @@ debug_params = -g -Wall
 
 profile_params = -pg -Wall
 
-main: $(serial_file) $(dependencies)
-	$(cpp_compiler) $(serial_file) $(dependencies) $(main_params) -o $(EXEC_NAME)
+main: $(serial_file) $(dependencies) $(obj_files)
+	$(cpp_compiler) $(serial_file) $(headers) $(main_params) -o $(EXEC_NAME)
 
-debug: $(serial_file) $(dependencies)
-	$(cpp_compiler) $(serial_file) $(dependencies) $(debug_params) -o $(EXEC_NAME)
+debug: $(serial_file) $(dependencies) $(obj_files)
+	$(cpp_compiler) $(serial_file) $(headers) $(debug_params) -o $(EXEC_NAME)
 
-profile:$(serial_file) $(dependencies)
-	$(cpp_compiler) $(serial_file) $(dependencies) $(profile_params) -o $(EXEC_NAME)
+profile:$(serial_file) $(dependencies) $(obj_files)
+	$(cpp_compiler) $(serial_file) $(headers) $(profile_params) -o $(EXEC_NAME)
 
 # Opens all source and header files for editing
 edit:
-	$(editor) $(serial_file) $(dependencies) $(others)
+	$(editor) $(serial_file) $(headers) $(others) &
 
 gdb:
 	gdb ./$(EXEC_NAME)
